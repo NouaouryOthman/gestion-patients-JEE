@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template">
+<head>
+    <meta charset="UTF-8">
+    <title>Details Patient</title>
+<body>
+<div layout:fragment="pageContent">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header" th:if="${mode == 'new'}">Enregistrement effectué</div>
+            <div class="card-header" th:if="${mode == 'affichage'}">Details patient :</div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label>ID :</label>
+                    <strong><label th:text="${patient.id}"></label></strong>
+                </div>
+                <div class="form-group">
+                    <label>Nom :</label>
+                    <strong><label th:text="${patient.nom}"></label></strong>
+                </div>
+                <div class="form-group">
+                    <label>Date Naissance :</label>
+                    <strong><label th:text="${patient.dateNaissance}"></label></strong>
+                </div>
+                <div class="form-group">
+                    <label>Score :</label>
+                    <strong><label th:text="${patient.score}"></label></strong>
+                </div>
+                <div class="form-group">
+                    <label>Malade :</label>
+                    <strong><label th:if="${patient.malade == true}">Oui</label></strong>
+                    <strong><label th:if="${patient.malade == false}">Non</label></strong>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a th:href="@{patients}" class="btn btn-primary">Revenir aux patients</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

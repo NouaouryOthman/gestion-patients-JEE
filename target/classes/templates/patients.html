@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      layout:decorate="template">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Page des Patients</title>
+</head>
+<body>
+<div layout:fragment="pageContent">
+    <div class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                Liste des Patients
+            </div>
+            <div class="card-body">
+                <form method="get" th:action="@{patients}">
+                    <div class="form-group">
+                        <label>Nom </label>
+                        <input type="text" name="motCle" th:value="${motCle}">
+                        <button class="btn btn-success">Chercher</button>
+                    </div>
+                </form>
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Date Naissance</th>
+                        <th>Score</th>
+                        <th>Malade</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr th:each="p:${patients}">
+                        <td th:text="${p.id}"></td>
+                        <td th:text="${p.nom}"></td>
+                        <td th:text="${p.dateNaissance}"></td>
+                        <td th:text="${p.score}"></td>
+                        <td th:if="${p.malade == true}">Oui</td>
+                        <td th:if="${p.malade == false}">Non</td>
+                        <td sec:authorize="hasRole('ROLE_ADMIN')"><a
+                                onclick="return confirm('Voulez-vous vraiment supprimer le patient ?')"
+                                class="btn btn-danger"
+                                th:href="@{deletePatient(id=${p.id}, page=${currentPage}, size=${size}, motCle=${motCle})}"><span
+                                class="fa fa-trash"></span></a>
+                        </td>
+                        <td><a class="btn btn-info"
+                               th:href="@{editPatient(id=${p.id})}"><span class="fa fa-pencil-square-o"></span></a>
+                        </td>
+                        <td><a class="btn btn-success"
+                               th:href="@{details(id=${p.id})}"><span class="fa fa-eye"></span></a>
+                        </td>
+                    </tr>
+                </table>
+                <ul class="nav nav-pills">
+                    <li th:each="page,status:${pages}">
+                        <a th:class="${status.index == currentPage?'btn btn-primary':'btn'}"
+                           th:href="@{patients(page=${status.index}, motCle=${motCle}, size=${size})}"
+                           th:text="${status.index + 1}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
